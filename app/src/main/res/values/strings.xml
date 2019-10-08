@@ -1,0 +1,9 @@
+<resources>
+  <string name="app_name">alarstudios</string>
+  <string name="login_form_password">password</string>
+  <string name="login_form_login">login</string>
+  <string name="login_form_enter_btn">Войти</string>
+  <string name="login_form_toast_empty_fields">Поля не могут быть пустыми! </string>
+  <string name="login_form_toast_error_fields">Неправильные Login или password! </string>
+  <string name="login_form_toast_error_text">Что-то пошло не так, повторите попытку позже</string>
+</resources>
