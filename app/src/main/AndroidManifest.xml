@@ -5,6 +5,7 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.INTERNET" />
+
   <application
     android:name=".utils.App"
     android:allowBackup="true"
@@ -14,8 +15,10 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     android:usesCleartextTraffic="true">
-    <activity android:name=".TableActivity"></activity>
-    <activity android:name=".MainActivity">
+    <activity android:name=".activities.BaseActivity"></activity>
+    <activity android:name=".activities.CardActivity" />
+    <activity android:name=".activities.TableActivity" />
+    <activity android:name=".activities.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 

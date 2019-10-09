@@ -18,7 +18,6 @@ public class AuthModel implements Serializable {
   @Setter
   private String code;
 
-
   @Override
   public String toString() {
     return "AuthModel{" +
