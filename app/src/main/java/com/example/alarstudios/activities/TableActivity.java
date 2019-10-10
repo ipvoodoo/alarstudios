@@ -1,7 +1,10 @@
 package com.example.alarstudios.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,9 +22,11 @@ import com.example.alarstudios.utils.ConstantManager;
 import com.example.alarstudios.utils.NetworkStatusChecker;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import java.util.List;
 import javax.inject.Inject;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class TableActivity extends BaseActivity implements ItemClickListener, OnRefreshListener {
+public class TableActivity extends BaseActivity implements ItemClickListener, OnRefreshListener , EasyPermissions.PermissionCallbacks{
 
   @Inject
   AlarstudiosApi mApi;
@@ -46,6 +51,8 @@ public class TableActivity extends BaseActivity implements ItemClickListener, On
       code = bundle.getString(ConstantManager.CODE);
     }
     onRefresh();
+
+    askPermission();
   }
 
   @Override
@@ -62,6 +69,7 @@ public class TableActivity extends BaseActivity implements ItemClickListener, On
 
   @Override
   public void onItemClick(Datum model) {
+
     Bundle bundle = new Bundle();
     bundle.putSerializable(ConstantManager.DATA, model);
     Intent intent = new Intent(this, CardActivity.class);
@@ -97,5 +105,32 @@ public class TableActivity extends BaseActivity implements ItemClickListener, On
           }
         });
   }
+
+  // region ===================== PERMISSIONS =====================
+  @Override
+  public void onPermissionsGranted(int requestCode, List<String> list) {
+  }
+
+  @Override
+  public void onPermissionsDenied(int requestCode, List<String> list) {
+    askPermission();
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+  }
+
+  //@AfterPermissionGranted(100)
+  private void askPermission() {
+    final String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+    if (EasyPermissions.hasPermissions(this, perms)) {
+    } else {
+      Handler h = new Handler(Looper.getMainLooper());
+      h.postDelayed(() -> EasyPermissions.requestPermissions(this, getString(R.string.map_permission), 100, perms), 200);
+    }
+  }
+  // endregion PERMISSIONS
 
 }

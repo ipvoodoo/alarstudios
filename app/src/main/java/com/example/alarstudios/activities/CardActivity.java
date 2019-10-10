@@ -5,15 +5,18 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.alarstudios.R;
-import com.google.android.gms.maps.CameraUpdate;
+import com.example.alarstudios.model.Datum;
+import com.example.alarstudios.utils.ConstantManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class CardActivity extends BaseActivity implements OnMapReadyCallback {
+
+  public static final String TAG = CardActivity.class.getSimpleName();
 
   @BindView(R.id.mapView)
   MapView mMapView;
@@ -29,24 +32,35 @@ public class CardActivity extends BaseActivity implements OnMapReadyCallback {
   TextView mCardLon;
 
   private GoogleMap map;
+  private Datum mDatum;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     ButterKnife.bind(this);
+
+    Bundle bundle = getIntent().getExtras();
+    if (bundle != null) {
+      mDatum = (Datum) bundle.getSerializable(ConstantManager.DATA);
+      setData();
+    }
     mMapView.onCreate(savedInstanceState);
     mMapView.getMapAsync(this);
-    map.getUiSettings().setMyLocationButtonEnabled(false);
-    map.setMyLocationEnabled(true);
-
-    MapsInitializer.initialize(this);
-
 
   }
 
   @Override
   protected int getLayoutResource() {
     return R.layout.activity_card;
+  }
+
+  private void setData() {
+    mCardName.setText(mDatum.getName());
+    mCardId.setText(mDatum.getId());
+    mCardCountry.setText(mDatum.getCountry());
+    mCardLat.setText(String.valueOf(mDatum.getLat()));
+    mCardLon.setText(String.valueOf(mDatum.getLon()));
   }
 
   @Override
@@ -63,11 +77,15 @@ public class CardActivity extends BaseActivity implements OnMapReadyCallback {
 
   @Override
   public void onMapReady(GoogleMap googleMap) {
+
     map = googleMap;
-    map.getUiSettings().setMyLocationButtonEnabled(false);
     map.setMyLocationEnabled(true);
 
-    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
-    map.animateCamera(cameraUpdate);
+    LatLng latLng = new LatLng(mDatum.getLat(), mDatum.getLon());
+    map.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+
+    map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+    map.setMinZoomPreference(15);
+
   }
 }

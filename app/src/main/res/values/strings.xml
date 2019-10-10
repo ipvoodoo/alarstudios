@@ -9,6 +9,7 @@
   <string name="table_toast_error_data">Ошибка получения данных!</string>
   <string name="network_error">Нет подключения к сети!</string>
   <string name="api_map_key">Нет подключения к сети!</string>
+  <string name="map_permission">Пожалуйста, разрешите доступ к вашему местоположению</string>
 
 
 </resources>

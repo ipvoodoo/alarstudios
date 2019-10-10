@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.example.alarstudios">
 
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.INTERNET" />
@@ -15,7 +16,12 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     android:usesCleartextTraffic="true">
-    <activity android:name=".activities.BaseActivity"></activity>
+
+    <meta-data
+      android:name="com.google.android.geo.API_KEY"
+      android:value="AIzaSyChl6Kev4tlQgTxSuk6GChWLCY7qWiZd3c" />
+
+    <activity android:name=".activities.BaseActivity" />
     <activity android:name=".activities.CardActivity" />
     <activity android:name=".activities.TableActivity" />
     <activity android:name=".activities.MainActivity">
